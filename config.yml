@@ -1,0 +1,45 @@
+#Version of config to known when to update.
+config: 1
+#All blocks with an inventory or any blocks that when right clicked shouldn't equip armor.
+blocked:
+    - FURNACE
+    - CHEST
+    - BEACON
+    - DISPENSER
+    - DROPPER
+    - HOPPER
+    - WORKBENCH
+    - ENCHANTMENT_TABLE
+    - ENDER_CHEST
+    - ANVIL
+    - BED_BLOCK
+    - FENCE_GATE
+    - SPRUCE_FENCE_GATE
+    - BIRCH_FENCE_GATE
+    - ACACIA_FENCE_GATE
+    - JUNGLE_FENCE_GATE
+    - DARK_OAK_FENCE_GATE
+    - IRON_DOOR_BLOCK
+    - WOODEN_DOOR
+    - SPRUCE_DOOR
+    - BIRCH_DOOR
+    - JUNGLE_DOOR
+    - ACACIA_DOOR
+    - DARK_OAK_DOOR
+    - WOOD_BUTTON
+    - STONE_BUTTON
+    - TRAP_DOOR
+    - IRON_TRAPDOOR
+    - DIODE_BLOCK_OFF
+    - DIODE_BLOCK_ON
+    - REDSTONE_COMPARATOR_OFF
+    - REDSTONE_COMPARATOR_ON
+    - FENCE
+    - SPRUCE_FENCE
+    - BIRCH_FENCE
+    - JUNGLE_FENCE
+    - DARK_OAK_FENCE
+    - ACACIA_FENCE
+    - NETHER_FENCE
+    - BREWING_STAND
+    - CAULDRON
