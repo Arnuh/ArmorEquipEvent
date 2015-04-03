@@ -102,14 +102,17 @@ public class Main extends JavaPlugin implements Listener{
 		if(type == null){ return true; }
 		if(lastEquip.containsKey(id)){
 			if(lastEquip.get(id).containsKey(type)){
-				if(System.currentTimeMillis() - lastEquip.get(id).get(type) > 500){ return true; }
+				if(System.currentTimeMillis() - lastEquip.get(id).get(type) < 500){ return false; }
 			}
 		}
-		return false;
+		return true;
 	}
 
 	public void setLastEquip(String id, ArmorEquipEvent.ArmorType armorType){
 		if(armorType != null){
+			if(!lastEquip.containsKey(id)){
+				lastEquip.put(id, new HashMap<ArmorEquipEvent.ArmorType, Long>());
+			}
 			HashMap<ArmorEquipEvent.ArmorType, Long> data = lastEquip.get(id);
 			data.put(armorType, System.currentTimeMillis());
 			lastEquip.put(id, data);
