@@ -14,6 +14,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 
 	private static final HandlerList handlers = new HandlerList();
 	private boolean cancel = false;
+	private final EquipMethod equipType;
 	private final ArmorType type;
 	private final ItemStack oldArmorPiece;
 	private ItemStack newArmorPiece;
@@ -26,9 +27,11 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 	 * @param oldArmorPiece The ItemStack of the armor removed.
 	 * @param newArmorPiece The ItemStack of the armor added.
 	 */
-	public ArmorEquipEvent(final Player player, final ArmorType type, final ItemStack oldArmorPiece, final ItemStack newArmorPiece){
+	public ArmorEquipEvent(final Player player, final EquipMethod equipType, final ArmorType type, final ItemStack oldArmorPiece, final ItemStack newArmorPiece){
 		super(player);
+		this.equipType = equipType;
 		this.type = type;
+		// I set it to null so people don't have to do material air checks.
 		this.oldArmorPiece = oldArmorPiece;
 		this.newArmorPiece = newArmorPiece;
 	}
@@ -74,16 +77,29 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		return type;
 	}
 
+	/**
+	 * Returns the last equipped armor piece, could be a piece of armor, an AIR material, or null.
+	 */
 	public final ItemStack getOldArmorPiece(){
 		return oldArmorPiece;
 	}
 
+	/**
+	 * Returns the newly equipped armor, could be a piece of armor, an AIR material, or null.
+	 */
 	public final ItemStack getNewArmorPiece(){
 		return newArmorPiece;
 	}
 
 	public final void setNewArmorPiece(final ItemStack newArmorPiece){
 		this.newArmorPiece = newArmorPiece;
+	}
+
+	/**
+	 * Gets the method used to either equip or uneqiip an armor piece.
+	 */
+	public EquipMethod getMethod(){
+		return equipType;
 	}
 
 	public enum ArmorType{
@@ -126,5 +142,9 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 					return null;
 			}
 		}
+	}
+
+	public enum EquipMethod{
+		SHIFT_CLICK, DRAG, HOTBAR, DISPENSER
 	}
 }

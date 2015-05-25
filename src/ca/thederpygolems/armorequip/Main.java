@@ -1,15 +1,19 @@
 package ca.thederpygolems.armorequip;
 
-import java.util.HashMap;
+import java.util.*;
 
 import org.bukkit.*;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;
-import org.bukkit.event.block.Action;
+import org.bukkit.event.block.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import ca.thederpygolems.armorequip.ArmorEquipEvent.ArmorType;
+import ca.thederpygolems.armorequip.ArmorEquipEvent.EquipMethod;
 
 /**
  * Created by: Borlea
@@ -18,12 +22,25 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Main extends JavaPlugin implements Listener{
 
-	HashMap<String, HashMap<ArmorEquipEvent.ArmorType, Long>> lastEquip;
+	// Update config to add signs
+	HashMap<String, HashMap<ArmorType, Long>> lastEquip;
+	List<String> blockedMaterials;
 
+	@Override
 	public void onEnable(){
 		saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(this, this);
-		lastEquip = new HashMap<String, HashMap<ArmorEquipEvent.ArmorType, Long>>();
+		lastEquip = new HashMap<String, HashMap<ArmorType, Long>>();
+		blockedMaterials = getConfig().getStringList("blocked");
+		// This code is not required if you plan to implement this into a plugin, just to update any old configs.
+		if(getConfig().getInt("config") == 1){
+			getConfig().set("config", 2);
+			blockedMaterials.add(Material.SIGN_POST.name());
+			blockedMaterials.add(Material.WALL_SIGN.name());
+			blockedMaterials.add(Material.SIGN.name());
+			getConfig().set("blocked", blockedMaterials);
+			saveConfig();
+		}
 	}
 
 	@EventHandler
@@ -36,22 +53,23 @@ public class Main extends JavaPlugin implements Listener{
 		if(e.getSlotType() != SlotType.ARMOR && e.getSlotType() != SlotType.QUICKBAR && !e.getInventory().getName().equalsIgnoreCase("container.crafting")){ return; }
 		if(!(e.getWhoClicked() instanceof Player)){ return; }
 		if(e.getCurrentItem() == null){ return; }
-		ArmorEquipEvent.ArmorType newArmorType = ArmorEquipEvent.ArmorType.matchType(shift ? e.getCurrentItem() : e.getCursor());
+		ArmorType newArmorType = ArmorType.matchType(shift ? e.getCurrentItem() : e.getCursor());
 		if(newArmorType != null){
-			if(e.getRawSlot() == 5 && !newArmorType.equals(ArmorEquipEvent.ArmorType.HELMET)){ return; }
-			if(e.getRawSlot() == 6 && !newArmorType.equals(ArmorEquipEvent.ArmorType.CHESTPLATE)){ return; }
-			if(e.getRawSlot() == 7 && !newArmorType.equals(ArmorEquipEvent.ArmorType.LEGGINGS)){ return; }
-			if(e.getRawSlot() == 8 && !newArmorType.equals(ArmorEquipEvent.ArmorType.BOOTS)){ return; }
+			// Used for drag and drop checking to make sure you aren't trying to place a helmet in the boots place.
+			if(e.getRawSlot() == 5 && !newArmorType.equals(ArmorType.HELMET) ||
+					e.getRawSlot() == 6 && !newArmorType.equals(ArmorType.CHESTPLATE) ||
+					e.getRawSlot() == 7 && !newArmorType.equals(ArmorType.LEGGINGS) ||
+					e.getRawSlot() == 8 && !newArmorType.equals(ArmorType.BOOTS)){ return; }
 		}
 		if(shift){
-			newArmorType = ArmorEquipEvent.ArmorType.matchType(e.getCurrentItem());
+			newArmorType = ArmorType.matchType(e.getCurrentItem());
 			if(newArmorType != null){
 				boolean equipping = true;
 				if(e.getRawSlot() == 5 || e.getRawSlot() == 6 || e.getRawSlot() == 7 || e.getRawSlot() == 8){
 					equipping = false;
 				}
-				if(newArmorType.equals(ArmorEquipEvent.ArmorType.HELMET) && (equipping ? e.getWhoClicked().getInventory().getHelmet() == null : e.getWhoClicked().getInventory().getHelmet() != null) || newArmorType.equals(ArmorEquipEvent.ArmorType.CHESTPLATE) && (equipping ? e.getWhoClicked().getInventory().getChestplate() == null : e.getWhoClicked().getInventory().getChestplate() != null) || newArmorType.equals(ArmorEquipEvent.ArmorType.LEGGINGS) && (equipping ? e.getWhoClicked().getInventory().getLeggings() == null : e.getWhoClicked().getInventory().getLeggings() != null) || newArmorType.equals(ArmorEquipEvent.ArmorType.BOOTS) && (equipping ? e.getWhoClicked().getInventory().getBoots() == null : e.getWhoClicked().getInventory().getBoots() != null)){
-					final ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), null, equipping ? null : e.getCurrentItem(), equipping ? e.getCurrentItem() : null);
+				if(newArmorType.equals(ArmorType.HELMET) && (equipping ? e.getWhoClicked().getInventory().getHelmet() == null : e.getWhoClicked().getInventory().getHelmet() != null) || newArmorType.equals(ArmorType.CHESTPLATE) && (equipping ? e.getWhoClicked().getInventory().getChestplate() == null : e.getWhoClicked().getInventory().getChestplate() != null) || newArmorType.equals(ArmorType.LEGGINGS) && (equipping ? e.getWhoClicked().getInventory().getLeggings() == null : e.getWhoClicked().getInventory().getLeggings() != null) || newArmorType.equals(ArmorType.BOOTS) && (equipping ? e.getWhoClicked().getInventory().getBoots() == null : e.getWhoClicked().getInventory().getBoots() != null)){
+					ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), EquipMethod.SHIFT_CLICK, newArmorType, equipping ? null : e.getCurrentItem(), equipping ? e.getCurrentItem() : null);
 					if(canEquip(e.getWhoClicked().getUniqueId().toString(), newArmorType)){
 						Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
 						setLastEquip(e.getWhoClicked().getUniqueId().toString(), newArmorType);
@@ -63,7 +81,10 @@ public class Main extends JavaPlugin implements Listener{
 			}
 		}else{
 			if(e.getRawSlot() == 5 || e.getRawSlot() == 6 || e.getRawSlot() == 7 || e.getRawSlot() == 8){
-				final ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), ArmorEquipEvent.ArmorType.matchType(shift ? e.getCurrentItem() : e.getCursor()), shift ? null : e.getCurrentItem(), shift ? e.getCurrentItem() : e.getCursor());
+				// e.getCurrentItem() == Unequip
+				// e.getCursor() == Equip
+				newArmorType = ArmorType.matchType(e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR ? e.getCurrentItem() : e.getCursor());
+				ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), EquipMethod.DRAG, newArmorType, e.getCurrentItem(), e.getCursor());
 				if(canEquip(e.getWhoClicked().getUniqueId().toString(), newArmorType)){
 					Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
 					setLastEquip(e.getWhoClicked().getUniqueId().toString(), newArmorType);
@@ -79,16 +100,20 @@ public class Main extends JavaPlugin implements Listener{
 	@EventHandler
 	public void playerInteractEvent(PlayerInteractEvent e){
 		if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK){
-			if(e.getClickedBlock() != null){
+			if(e.getClickedBlock() != null){// Check if action is right_click_block, who knows why I didn't just do another check like above.
+				// Some blocks have actions when you right click them which stops the client from equipping the armor in hand.
 				Material mat = e.getClickedBlock().getType();
-				for(String s : getConfig().getStringList("blocked")){
+				for(String s : blockedMaterials){
 					if(mat.name().equalsIgnoreCase(s)){ return; }
 				}
 			}
-			ArmorEquipEvent.ArmorType newArmorType = ArmorEquipEvent.ArmorType.matchType(e.getItem());
+			ArmorType newArmorType = ArmorType.matchType(e.getItem());
 			if(newArmorType != null){
-				if(newArmorType.equals(ArmorEquipEvent.ArmorType.HELMET) && e.getPlayer().getInventory().getHelmet() == null || newArmorType.equals(ArmorEquipEvent.ArmorType.CHESTPLATE) && e.getPlayer().getInventory().getChestplate() == null || newArmorType.equals(ArmorEquipEvent.ArmorType.LEGGINGS) && e.getPlayer().getInventory().getLeggings() == null || newArmorType.equals(ArmorEquipEvent.ArmorType.BOOTS) && e.getPlayer().getInventory().getBoots() == null){
-					final ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(e.getPlayer(), ArmorEquipEvent.ArmorType.matchType(e.getItem()), null, e.getItem());
+				if(newArmorType.equals(ArmorType.HELMET) && e.getPlayer().getInventory().getHelmet() == null ||
+						newArmorType.equals(ArmorType.CHESTPLATE) && e.getPlayer().getInventory().getChestplate() == null ||
+						newArmorType.equals(ArmorType.LEGGINGS) && e.getPlayer().getInventory().getLeggings() == null ||
+						newArmorType.equals(ArmorType.BOOTS) && e.getPlayer().getInventory().getBoots() == null){
+					ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(e.getPlayer(), EquipMethod.HOTBAR, ArmorType.matchType(e.getItem()), null, e.getItem());
 					Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
 					if(armorEquipEvent.isCancelled()){
 						e.setCancelled(true);
@@ -98,22 +123,50 @@ public class Main extends JavaPlugin implements Listener{
 		}
 	}
 
-	public boolean canEquip(String id, ArmorEquipEvent.ArmorType type){
+	@EventHandler
+	public void dispenserFireEvent(BlockDispenseEvent e){
+		ArmorType type = ArmorType.matchType(e.getItem());
+		if(ArmorType.matchType(e.getItem()) != null){
+			Location loc = e.getBlock().getLocation();
+			for(Player p : loc.getWorld().getPlayers()){
+				if(loc.getBlockY() - p.getLocation().getBlockY() >= -1 && loc.getBlockY() - p.getLocation().getBlockY() <= 1){
+					if(p.getInventory().getHelmet() == null && type.equals(ArmorType.HELMET) || p.getInventory().getChestplate() == null && type.equals(ArmorType.CHESTPLATE) || p.getInventory().getLeggings() == null && type.equals(ArmorType.LEGGINGS) || p.getInventory().getBoots() == null && type.equals(ArmorType.BOOTS)){
+						org.bukkit.block.Dispenser dispenser = (org.bukkit.block.Dispenser) e.getBlock().getState();
+						org.bukkit.material.Dispenser dis = (org.bukkit.material.Dispenser) dispenser.getData();
+						BlockFace directionFacing = dis.getFacing();
+						// Someone told me not to do big if checks because it's hard to read, look at me doing it -_-
+						if(directionFacing == BlockFace.EAST && p.getLocation().getBlockX() != loc.getBlockX() && p.getLocation().getX() <= loc.getX() + 2.3 && p.getLocation().getX() >= loc.getX() || directionFacing == BlockFace.WEST && p.getLocation().getX() >= loc.getX() - 1.3 && p.getLocation().getX() <= loc.getX() || directionFacing == BlockFace.SOUTH && p.getLocation().getBlockZ() != loc.getBlockZ() && p.getLocation().getZ() <= loc.getZ() + 2.3 && p.getLocation().getZ() >= loc.getZ() || directionFacing == BlockFace.NORTH && p.getLocation().getZ() >= loc.getZ() - 1.3 && p.getLocation().getZ() <= loc.getZ()){
+							ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(p, EquipMethod.DISPENSER, ArmorType.matchType(e.getItem()), null, e.getItem());
+							Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+							if(armorEquipEvent.isCancelled()){
+								e.setCancelled(true);
+							}
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public boolean canEquip(String id, ArmorType type){
 		if(type == null){ return true; }
 		if(lastEquip.containsKey(id)){
 			if(lastEquip.get(id).containsKey(type)){
-				if(System.currentTimeMillis() - lastEquip.get(id).get(type) < 500){ return false; }
+				if(System.currentTimeMillis() - lastEquip.get(id).get(type) < 500){
+					return false;
+				}
 			}
 		}
 		return true;
 	}
 
-	public void setLastEquip(String id, ArmorEquipEvent.ArmorType armorType){
+	public void setLastEquip(String id, ArmorType armorType){
 		if(armorType != null){
 			if(!lastEquip.containsKey(id)){
-				lastEquip.put(id, new HashMap<ArmorEquipEvent.ArmorType, Long>());
+				lastEquip.put(id, new HashMap<ArmorType, Long>());
 			}
-			HashMap<ArmorEquipEvent.ArmorType, Long> data = lastEquip.get(id);
+			HashMap<ArmorType, Long> data = lastEquip.get(id);
 			data.put(armorType, System.currentTimeMillis());
 			lastEquip.put(id, data);
 		}

@@ -1,5 +1,5 @@
 #Version of config to known when to update.
-config: 1
+config: 2
 #All blocks with an inventory or any blocks that when right clicked shouldn't equip armor.
 blocked:
     - FURNACE
@@ -43,3 +43,6 @@ blocked:
     - NETHER_FENCE
     - BREWING_STAND
     - CAULDRON
+    - SIGN_POST
+    - WALL_SIGN
+    - SIGN
