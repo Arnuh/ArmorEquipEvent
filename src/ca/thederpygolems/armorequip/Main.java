@@ -9,7 +9,8 @@ import org.bukkit.event.*;
 import org.bukkit.event.block.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ca.thederpygolems.armorequip.ArmorEquipEvent.ArmorType;
@@ -144,6 +145,30 @@ public class Main extends JavaPlugin implements Listener{
 							return;
 						}
 					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void itemBreakEvent(PlayerItemBreakEvent e){
+		ArmorType type = ArmorType.matchType(e.getBrokenItem());
+		if(type != null){
+			Player p = e.getPlayer();
+			ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(p, EquipMethod.BROKE, type, e.getBrokenItem(), null);
+			Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+			if(armorEquipEvent.isCancelled()){
+				ItemStack i = e.getBrokenItem().clone();
+				i.setAmount(1);
+				i.setDurability((short) (i.getDurability() - 1));
+				if(type.equals(ArmorType.HELMET)){
+					p.getInventory().setHelmet(i);
+				}else if(type.equals(ArmorType.CHESTPLATE)){
+					p.getInventory().setChestplate(i);
+				}else if(type.equals(ArmorType.LEGGINGS)){
+					p.getInventory().setLeggings(i);
+				}else if(type.equals(ArmorType.BOOTS)){
+					p.getInventory().setBoots(i);
 				}
 			}
 		}

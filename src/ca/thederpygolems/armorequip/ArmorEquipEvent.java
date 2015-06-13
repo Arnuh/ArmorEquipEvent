@@ -145,6 +145,6 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 	}
 
 	public enum EquipMethod{
-		SHIFT_CLICK, DRAG, HOTBAR, DISPENSER
+		SHIFT_CLICK, DRAG, HOTBAR, DISPENSER, BROKE;
 	}
 }
