@@ -35,7 +35,7 @@ public class ArmorListener implements Listener
         this.handleDispenser = handleDispenser;
         lastEquip = new HashMap<>();
     }
-    private HashMap<String, HashMap<ArmorType, Long>> lastEquip;
+    private final HashMap<String, HashMap<ArmorType, Long>> lastEquip;
 
     @EventHandler
     public final void onInventoryClick(final InventoryClickEvent e){
