@@ -1,6 +1,6 @@
 package com.reactivemc.armor;
 
-import com.reactivemc.events.ArmorEquipEvent;
+import ca.thederpygolems.ArmorEquipEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
