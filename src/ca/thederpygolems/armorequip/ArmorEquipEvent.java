@@ -6,145 +6,122 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Created by: Borlea
+ * @Author Borlea
+ * @Author ReactiveMC
  * https://github.com/borlea/
  * http://thederpygolems.ca/
  */
-public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
+public final class ArmorEquipEvent extends PlayerEvent implements Cancellable {
 
-	private static final HandlerList handlers = new HandlerList();
-	private boolean cancel = false;
-	private final EquipMethod equipType;
-	private final ArmorType type;
-	private final ItemStack oldArmorPiece;
-	private ItemStack newArmorPiece;
+    private static final HandlerList handlers = new HandlerList();
+    private boolean cancel = false;
+    private final EquipMethod equipType;
+    private final ArmorType type;
+    private final ItemStack oldArmorPiece;
+    private ItemStack newArmorPiece;
+    private final ItemStack[] oldArmor;
+    private ItemStack[] newArmor;
 
-	/**
-	 * Constructor for the ArmorEquipEvent.
-	 * 
-	 * @param player The player who put on / removed the armor.
-	 * @param type The ArmorType of the armor added
-	 * @param oldArmorPiece The ItemStack of the armor removed.
-	 * @param newArmorPiece The ItemStack of the armor added.
-	 */
-	public ArmorEquipEvent(final Player player, final EquipMethod equipType, final ArmorType type, final ItemStack oldArmorPiece, final ItemStack newArmorPiece){
-		super(player);
-		this.equipType = equipType;
-		this.type = type;
-		// I set it to null so people don't have to do material air checks.
-		this.oldArmorPiece = oldArmorPiece;
-		this.newArmorPiece = newArmorPiece;
-	}
+    /**
+     * Constructor for the ArmorEquipEvent.
+     *  @param player The player who put on / removed the armor.
+     * @param type The ArmorType of the armor added
+     * @param oldArmorPiece The ItemStack of the armor removed.
+     * @param newArmorPiece The ItemStack of the armor added.
+     * @param oldArmor The old armor of a player
+     */
+    public ArmorEquipEvent(final Player player, final EquipMethod equipType, final ArmorType type, final ItemStack oldArmorPiece, final ItemStack newArmorPiece, ItemStack[] oldArmor){
+        super(player);
+        this.equipType = equipType;
+        this.type = type;
+        // I set it to null so people don't have to do material air checks.
+        this.oldArmorPiece = oldArmorPiece;
+        this.newArmorPiece = newArmorPiece;
+        this.oldArmor = oldArmor;
+        this.newArmor = oldArmor.clone();
+        this.newArmor[type.getSlot()] = newArmorPiece;
+        for (int i = 0; i<4; i++) {
+            if (this.newArmor[i] == null) {
+                this.newArmor[i] = new ItemStack(Material.AIR);
+            }
+            if (this.oldArmor[i] == null) {
+                this.oldArmor[i] = new ItemStack(Material.AIR);
+            }
+        }
+    }
 
-	/**
-	 * Gets a list of handlers handling this event.
-	 * 
-	 * @return A list of handlers handling this event.
-	 */
-	public final static HandlerList getHandlerList(){
-		return handlers;
-	}
+    /**
+     * Sets if this event should be cancelled.
+     *
+     * @param cancel If this event should be cancelled.
+     */
+    public final void setCancelled(final boolean cancel){
+        this.cancel = cancel;
+    }
 
-	/**
-	 * Gets a list of handlers handling this event.
-	 * 
-	 * @return A list of handlers handling this event.
-	 */
-	@Override
-	public final HandlerList getHandlers(){
-		return handlers;
-	}
+    /**
+     * Gets if this event is cancelled.
+     *
+     * @return If this event is cancelled
+     */
+    public final boolean isCancelled(){
+        return cancel;
+    }
 
-	/**
-	 * Sets if this event should be cancelled.
-	 * 
-	 * @param cancel If this event should be cancelled.
-	 */
-	public final void setCancelled(final boolean cancel){
-		this.cancel = cancel;
-	}
+    public final ArmorType getType(){
+        return type;
+    }
+    
+    /**
+    * Gets a list of handlers handling this event.
+    * 
+    * @return A list of handlers handling this event.
+    */
+    public static HandlerList getHandlerList(){
+    	return handlers;
+    }
 
-	/**
-	 * Gets if this event is cancelled.
-	 * 
-	 * @return If this event is cancelled
-	 */
-	public final boolean isCancelled(){
-		return cancel;
-	}
+    /**
+     * Returns the last equipped armor piece, could be a piece of armor, an AIR material, or null.
+     */
+    public final ItemStack getOldArmorPiece(){
+        return oldArmorPiece;
+    }
 
-	public final ArmorEquipEvent.ArmorType getType(){
-		return type;
-	}
+    /**
+     * Returns the newly equipped armor, could be a piece of armor, an AIR material, or null.
+     */
+    public final ItemStack getNewArmorPiece(){
+        return newArmorPiece;
+    }
 
-	/**
-	 * Returns the last equipped armor piece, could be a piece of armor, an AIR material, or null.
-	 */
-	public final ItemStack getOldArmorPiece(){
-		return oldArmorPiece;
-	}
+    public final void setNewArmorPiece(final ItemStack newArmorPiece){
+        this.newArmorPiece = newArmorPiece;
+    }
 
-	/**
-	 * Returns the newly equipped armor, could be a piece of armor, an AIR material, or null.
-	 */
-	public final ItemStack getNewArmorPiece(){
-		return newArmorPiece;
-	}
+    /**
+     * Gets the method used to either equip or uneqiip an armor piece.
+     */
+    public EquipMethod getMethod(){
+        return equipType;
+    }
 
-	public final void setNewArmorPiece(final ItemStack newArmorPiece){
-		this.newArmorPiece = newArmorPiece;
-	}
+    @Deprecated
+    public ItemStack[] getNewArmor() {
+        return newArmor;
+    }
 
-	/**
-	 * Gets the method used to either equip or uneqiip an armor piece.
-	 */
-	public EquipMethod getMethod(){
-		return equipType;
-	}
+    public ItemStack[] getOldArmor() {
+        return oldArmor;
+    }
 
-	public enum ArmorType{
-		HELMET, CHESTPLATE, LEGGINGS, BOOTS;
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
 
-		/**
-		 * Attempts to match the ArmorType for the specified ItemStack.
-		 * 
-		 * @param itemStack The ItemStack to parse the type of.
-		 * @return The parsed ArmorType. (null if none were found.)
-		 */
-		public final static ArmorType matchType(final ItemStack itemStack){
-			if(itemStack == null){ return null; }
-			switch (itemStack.getType()){
-				case DIAMOND_HELMET:
-				case GOLD_HELMET:
-				case IRON_HELMET:
-				case CHAINMAIL_HELMET:
-				case LEATHER_HELMET:
-					return ArmorEquipEvent.ArmorType.HELMET;
-				case DIAMOND_CHESTPLATE:
-				case GOLD_CHESTPLATE:
-				case IRON_CHESTPLATE:
-				case CHAINMAIL_CHESTPLATE:
-				case LEATHER_CHESTPLATE:
-					return ArmorEquipEvent.ArmorType.CHESTPLATE;
-				case DIAMOND_LEGGINGS:
-				case GOLD_LEGGINGS:
-				case IRON_LEGGINGS:
-				case CHAINMAIL_LEGGINGS:
-				case LEATHER_LEGGINGS:
-					return ArmorEquipEvent.ArmorType.LEGGINGS;
-				case DIAMOND_BOOTS:
-				case GOLD_BOOTS:
-				case IRON_BOOTS:
-				case CHAINMAIL_BOOTS:
-				case LEATHER_BOOTS:
-					return ArmorEquipEvent.ArmorType.BOOTS;
-				default:
-					return null;
-			}
-		}
-	}
 
-	public enum EquipMethod{
-		SHIFT_CLICK, DRAG, HOTBAR, DISPENSER, BROKE;
-	}
+    public enum EquipMethod{
+        SHIFT_CLICK, DRAG, HOTBAR, DISPENSER, BROKE;
+    }
 }
