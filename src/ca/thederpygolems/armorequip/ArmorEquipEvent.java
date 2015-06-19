@@ -38,7 +38,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable {
         this.oldArmorPiece = oldArmorPiece;
         this.newArmorPiece = newArmorPiece;
         this.oldArmor = oldArmor;
-        this.newArmor = new ItemStack[4];
+        this.newArmor = oldArmor.clone();
         this.newArmor[type.getSlot()] = newArmorPiece;
         for (int i = 0; i<4; i++) {
             if (this.newArmor[i] == null) {
