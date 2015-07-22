@@ -21,7 +21,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 
 	/**
 	 * Constructor for the ArmorEquipEvent.
-	 * 
+	 *
 	 * @param player The player who put on / removed the armor.
 	 * @param type The ArmorType of the armor added
 	 * @param oldArmorPiece The ItemStack of the armor removed.
@@ -31,14 +31,13 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		super(player);
 		this.equipType = equipType;
 		this.type = type;
-		// I set it to null so people don't have to do material air checks.
 		this.oldArmorPiece = oldArmorPiece;
 		this.newArmorPiece = newArmorPiece;
 	}
 
 	/**
 	 * Gets a list of handlers handling this event.
-	 * 
+	 *
 	 * @return A list of handlers handling this event.
 	 */
 	public final static HandlerList getHandlerList(){
@@ -47,7 +46,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 
 	/**
 	 * Gets a list of handlers handling this event.
-	 * 
+	 *
 	 * @return A list of handlers handling this event.
 	 */
 	@Override
@@ -57,7 +56,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 
 	/**
 	 * Sets if this event should be cancelled.
-	 * 
+	 *
 	 * @param cancel If this event should be cancelled.
 	 */
 	public final void setCancelled(final boolean cancel){
@@ -66,7 +65,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 
 	/**
 	 * Gets if this event is cancelled.
-	 * 
+	 *
 	 * @return If this event is cancelled
 	 */
 	public final boolean isCancelled(){
@@ -107,7 +106,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 
 		/**
 		 * Attempts to match the ArmorType for the specified ItemStack.
-		 * 
+		 *
 		 * @param itemStack The ItemStack to parse the type of.
 		 * @return The parsed ArmorType. (null if none were found.)
 		 */
@@ -145,6 +144,6 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 	}
 
 	public enum EquipMethod{
-		SHIFT_CLICK, DRAG, HOTBAR, DISPENSER, BROKE;
+		SHIFT_CLICK, DRAG, HOTBAR, DISPENSER, BROKE, DEATH;
 	}
 }

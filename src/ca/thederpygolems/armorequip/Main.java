@@ -7,14 +7,14 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import ca.thederpygolems.armorequip.ArmorEquipEvent.ArmorType;
-import ca.thederpygolems.armorequip.ArmorEquipEvent.EquipMethod;
+import ca.thederpygolems.armorequip.ArmorEquipEvent.*;
 
 /**
  * Created by: Borlea
@@ -170,6 +170,16 @@ public class Main extends JavaPlugin implements Listener{
 				}else if(type.equals(ArmorType.BOOTS)){
 					p.getInventory().setBoots(i);
 				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void playerDeathEvent(PlayerDeathEvent e){
+		Player p = e.getEntity();
+		for(ItemStack i : p.getInventory().getArmorContents()){
+			if(i != null && !i.getType().equals(Material.AIR)) {
+				Bukkit.getServer().getPluginManager().callEvent(new ArmorEquipEvent(p, EquipMethod.DEATH, ArmorType.matchType(i), i, null));
 			}
 		}
 	}
