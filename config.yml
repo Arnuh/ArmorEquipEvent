@@ -1,6 +1,4 @@
-#Version of config to known when to update.
-config: 2
-#All blocks with an inventory or any blocks that when right clicked shouldn't equip armor.
+# All blocks with an inventory or any blocks that when right clicked shouldn't equip armor.
 blocked:
     - FURNACE
     - CHEST
