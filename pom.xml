@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.codingforcookies</groupId>
+  <artifactId>ArmorEquipEvent</artifactId>
+  <version>1.6</version>
+  
+  <distributionManagement>
+      <repository>
+          <id>codingforcookies-ftp</id>
+          <url>ftp://repo.codingforcookies.com/repository/</url>
+      </repository>
+  </distributionManagement>
+    
+  <dependencies>
+    <dependency>
+        <groupId>org.spigotmc</groupId>
+        <artifactId>spigot-api</artifactId>
+        <version>1.9-R0.1-SNAPSHOT</version>
+        <type>jar</type>
+    </dependency>
+  </dependencies>
+  
+  <repositories>
+    <repository>
+        <id>spigot-repo</id>
+        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+  </repositories>
+  
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+        <resource>
+            <targetPath>.</targetPath>
+            <filtering>true</filtering>
+            <directory>src/resources/</directory>
+            <includes>
+                <include>*.yml</include>
+            </includes>
+        </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
+    <extensions>
+        <extension>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ftp</artifactId>
+            <version>2.10</version>
+        </extension>
+    </extensions>
+  </build>
+</project>

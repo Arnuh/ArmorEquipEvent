@@ -1,4 +1,4 @@
-package ca.thederpygolems.armorequip;
+package com.codingforcookies.armorequip;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
