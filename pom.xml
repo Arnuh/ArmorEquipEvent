@@ -4,12 +4,16 @@
   <artifactId>ArmorEquipEvent</artifactId>
   <version>1.6</version>
   
-  <distributionManagement>
-      <repository>
-          <id>codingforcookies-ftp</id>
-          <url>ftp://repo.codingforcookies.com/repository/</url>
-      </repository>
-  </distributionManagement>
+    <distributionManagement>
+        <repository>
+            <id>codingforcookies-nexus</id>
+            <url>http://repo.codingforcookies.com/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>codingforcookies-nexus</id>
+            <url>http://repo.codingforcookies.com/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     
   <dependencies>
     <dependency>
@@ -48,6 +52,26 @@
           <target>1.7</target>
         </configuration>
       </plugin>
+		    <plugin>
+		    	<groupId>org.sonatype.plugins</groupId>
+		    	<artifactId>nexus-staging-maven-plugin</artifactId>
+		    	<version>1.6.7</version>
+		    	<extensions>true</extensions>
+			    <executions>
+			    	<execution>
+			        	<id>default-deploy</id>
+			        	<phase>deploy</phase>
+			        	<goals>
+			           		<goal>deploy</goal>
+			         	</goals>
+			    	</execution>
+			    </executions>
+		    	<configuration>
+		        	<serverId>codingforcookies-nexus</serverId>
+		        	<nexusUrl>http://repo.codingforcookies.com/</nexusUrl>
+		        	<skipStaging>true</skipStaging>
+		      	</configuration>
+		    </plugin>
     </plugins>
     <extensions>
         <extension>
