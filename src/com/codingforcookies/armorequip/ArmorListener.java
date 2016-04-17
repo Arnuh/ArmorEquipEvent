@@ -40,14 +40,14 @@ public class ArmorListener implements Listener{
 	@EventHandler
 	public final void onInventoryClick(final InventoryClickEvent e){
 		boolean shift = false, numberkey = false;
-		if(e.isCancelled()){ return; }
+		if(e.isCancelled()) return;
 		if(e.getClick().equals(ClickType.SHIFT_LEFT) || e.getClick().equals(ClickType.SHIFT_RIGHT)){
 			shift = true;
 		}
 		if(e.getClick().equals(ClickType.NUMBER_KEY)){
 			numberkey = true;
 		}
-		if((e.getSlotType() != SlotType.ARMOR || e.getSlotType() != SlotType.QUICKBAR) && !e.getInventory().getName().equalsIgnoreCase("container.crafting")){ return; }
+		if((e.getSlotType() != SlotType.ARMOR || e.getSlotType() != SlotType.QUICKBAR) && !e.getInventory().getType().equals(InventoryType.CRAFTING)) return;
 		if(!(e.getWhoClicked() instanceof Player)) return;
 		if(e.getCurrentItem() == null) return;
 		ArmorType newArmorType = ArmorType.matchType(shift ? e.getCurrentItem() : e.getCursor());
