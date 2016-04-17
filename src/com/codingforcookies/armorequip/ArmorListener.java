@@ -109,8 +109,8 @@ public class ArmorListener implements Listener{
 	public void playerInteractEvent(PlayerInteractEvent e){
 		if(e.getHand() == null) return;
 		if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK){
-			/*final Player player = e.getPlayer();
-			if(e.getHand().equals(EquipmentSlot.HAND)){
+			final Player player = e.getPlayer();
+			/*if(e.getHand().equals(EquipmentSlot.HAND)){
 				if(ArmorType.matchType(player.getInventory().getItemInMainHand()) == null) return;// Cancels duplicate
 			}else if(e.getHand().equals(EquipmentSlot.OFF_HAND)){
 				if(ArmorType.matchType(player.getInventory().getItemInOffHand()) == null) return;
