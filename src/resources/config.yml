@@ -2,6 +2,7 @@
 blocked:
     - FURNACE
     - CHEST
+    - TRAPPED_CHEST
     - BEACON
     - DISPENSER
     - DROPPER
