@@ -45,3 +45,4 @@ blocked:
     - SIGN_POST
     - WALL_SIGN
     - SIGN
+    - LEVER
