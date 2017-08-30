@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -133,31 +132,26 @@ public class ArmorListener implements Listener{
 		}
 	}
 
-	@EventHandler
+	/*@EventHandler
 	public void dispenserFireEvent(BlockDispenseEvent e){
 		ArmorType type = ArmorType.matchType(e.getItem());
-		if(ArmorType.matchType(e.getItem()) != null){
-			Location loc = e.getBlock().getLocation();
-			for(Player p : loc.getWorld().getPlayers()){
-				if(loc.getBlockY() - p.getLocation().getBlockY() >= -1 && loc.getBlockY() - p.getLocation().getBlockY() <= 1){
-					if(p.getInventory().getHelmet() == null && type.equals(ArmorType.HELMET) || p.getInventory().getChestplate() == null && type.equals(ArmorType.CHESTPLATE) || p.getInventory().getLeggings() == null && type.equals(ArmorType.LEGGINGS) || p.getInventory().getBoots() == null && type.equals(ArmorType.BOOTS)){
-						org.bukkit.block.Dispenser dispenser = (org.bukkit.block.Dispenser) e.getBlock().getState();
-						org.bukkit.material.Dispenser dis = (org.bukkit.material.Dispenser) dispenser.getData();
-						BlockFace directionFacing = dis.getFacing();
-						// Someone told me not to do big if checks because it's hard to read, look at me doing it -_-
-						if(directionFacing == BlockFace.EAST && p.getLocation().getBlockX() != loc.getBlockX() && p.getLocation().getX() <= loc.getX() + 2.3 && p.getLocation().getX() >= loc.getX() || directionFacing == BlockFace.WEST && p.getLocation().getX() >= loc.getX() - 1.3 && p.getLocation().getX() <= loc.getX() || directionFacing == BlockFace.SOUTH && p.getLocation().getBlockZ() != loc.getBlockZ() && p.getLocation().getZ() <= loc.getZ() + 2.3 && p.getLocation().getZ() >= loc.getZ() || directionFacing == BlockFace.NORTH && p.getLocation().getZ() >= loc.getZ() - 1.3 && p.getLocation().getZ() <= loc.getZ()){
-							ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(p, EquipMethod.DISPENSER, ArmorType.matchType(e.getItem()), null, e.getItem());
-							Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
-							if(armorEquipEvent.isCancelled()){
-								e.setCancelled(true);
-							}
-							return;
-						}
-					}
+		if(type != null){
+			org.bukkit.block.Dispenser dispenser = (org.bukkit.block.Dispenser) e.getBlock().getState();
+			org.bukkit.material.Dispenser dispenserData = (org.bukkit.material.Dispenser) dispenser.getData();
+			Location loc = shift(e.getBlock().getLocation(), dispenserData.getFacing(), 1);
+			List<EntityLiving> list = ((CraftWorld) loc.getWorld()).getHandle().a(EntityLiving.class, new AxisAlignedBB(new BlockPosition(loc.getX(), loc.getY(), loc.getZ())), Predicates.and(IEntitySelector.e, new IEntitySelector.EntitySelectorEquipable(CraftItemStack.asNMSCopy(e.getItem()))));
+			if(list.isEmpty()) return;
+			EntityLiving ent = list.get(0);
+			if(ent instanceof EntityPlayer){
+				Player p = (Player) ent.getBukkitEntity();
+				ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(p, EquipMethod.DISPENSER, type, null, e.getItem());
+				Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+				if(armorEquipEvent.isCancelled()){
+					e.setCancelled(true);
 				}
 			}
 		}
-	}
+	}*/
 
 	@EventHandler
 	public void itemBreakEvent(PlayerItemBreakEvent e){
@@ -192,5 +186,10 @@ public class ArmorListener implements Listener{
 				// No way to cancel a death event.
 			}
 		}
+	}
+
+	private Location shift(Location start, BlockFace direction, int multiplier){
+		if(multiplier == 0) return start;
+		return new Location(start.getWorld(), start.getX() + direction.getModX() * multiplier, start.getY() + direction.getModY() * multiplier, start.getZ() + direction.getModZ() * multiplier);
 	}
 }
