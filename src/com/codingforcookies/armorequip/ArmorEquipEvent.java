@@ -107,7 +107,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		return equipType;
 	}
 
-	public enum EquipMethod{
+	public enum EquipMethod{// These have got to be the worst documentations ever.
 	    /**
 	     * When you shift click an armor piece to equip or unequip
 	     */
@@ -116,6 +116,10 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		 * When you drag and drop the item to equip or unequip
 		 */
 		DRAG,
+		/**
+		 * When you manually equip or unequip the item. Use to be DRAG
+		 */
+		PICK_DROP,
 		/**
 		 * When you right click an armor piece in the hotbar without the inventory open to equip.
 		 */
@@ -129,7 +133,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		 */
 		DISPENSER,
 		/**
-		 * When an armor piece breaks to unequip
+		 * When an armor piece is removed due to it losing all durability.
 		 */
 		BROKE,
 		/**

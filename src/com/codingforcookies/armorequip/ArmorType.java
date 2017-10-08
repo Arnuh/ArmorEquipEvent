@@ -31,6 +31,7 @@ public enum ArmorType{
 			case IRON_HELMET:
 			case CHAINMAIL_HELMET:
 			case LEATHER_HELMET:
+			case PUMPKIN:
 				return HELMET;
 			case DIAMOND_CHESTPLATE:
 			case GOLD_CHESTPLATE:

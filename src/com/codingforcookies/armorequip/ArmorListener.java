@@ -7,14 +7,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
@@ -95,7 +93,7 @@ public class ArmorListener implements Listener{
 				newArmorType = ArmorType.matchType(e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR ? e.getCurrentItem() : e.getCursor());
 			}
 			if(newArmorType != null && e.getRawSlot() == newArmorType.getSlot()){
-				EquipMethod method = EquipMethod.DRAG;
+				EquipMethod method = EquipMethod.PICK_DROP;
 				if(e.getAction().equals(InventoryAction.HOTBAR_SWAP) || numberkey) method = EquipMethod.HOTBAR_SWAP;
 				ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), method, newArmorType, oldArmorPiece, newArmorPiece);
 				Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
@@ -130,6 +128,34 @@ public class ArmorListener implements Listener{
 				}
 			}
 		}
+	}
+
+	@EventHandler
+	public void inventoryDrag(InventoryDragEvent event){
+		// getType() seems to always be even.
+		// Old Cursor gives the item you are equipping
+		// Raw slot is the ArmorType slot
+		// Can't replace armor using this method making getCursor() useless.
+		ArmorType type = ArmorType.matchType(event.getOldCursor());
+		if(event.getRawSlots().isEmpty()) return;// Idk if this will ever happen
+		if(type != null && type.getSlot() == event.getRawSlots().stream().findFirst().orElse(0)){
+			ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) event.getWhoClicked(), EquipMethod.DRAG, type, null, event.getOldCursor());
+			Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+			if(armorEquipEvent.isCancelled()){
+				event.setResult(Result.DENY);
+				event.setCancelled(true);
+			}
+		}
+		// Debug shit
+		/*System.out.println("Slots: " + event.getInventorySlots().toString());
+		System.out.println("Raw Slots: " + event.getRawSlots().toString());
+		if(event.getCursor() != null){
+			System.out.println("Cursor: " + event.getCursor().getType().name());
+		}
+		if(event.getOldCursor() != null){
+			System.out.println("OldCursor: " + event.getOldCursor().getType().name());
+		}
+		System.out.println("Type: " + event.getType().name());*/
 	}
 
 	/*@EventHandler
