@@ -1,5 +1,6 @@
 package com.codingforcookies.armorequip;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -24,7 +25,7 @@ public enum ArmorType{
 	 * @return The parsed ArmorType. (null if none were found.)
 	 */
 	public final static ArmorType matchType(final ItemStack itemStack){
-		if(itemStack == null) { return null; }
+		if(itemStack == null || itemStack.getType().equals(Material.AIR)) return null;
 		switch (itemStack.getType()){
 			case DIAMOND_HELMET:
 			case GOLD_HELMET:
