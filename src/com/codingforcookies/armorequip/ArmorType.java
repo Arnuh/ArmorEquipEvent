@@ -26,36 +26,12 @@ public enum ArmorType{
 	 */
 	public final static ArmorType matchType(final ItemStack itemStack){
 		if(itemStack == null || itemStack.getType().equals(Material.AIR)) return null;
-		switch (itemStack.getType()){
-			case DIAMOND_HELMET:
-			case GOLD_HELMET:
-			case IRON_HELMET:
-			case CHAINMAIL_HELMET:
-			case LEATHER_HELMET:
-			case PUMPKIN:
-			case SKULL_ITEM:
-				return HELMET;
-			case DIAMOND_CHESTPLATE:
-			case GOLD_CHESTPLATE:
-			case IRON_CHESTPLATE:
-			case CHAINMAIL_CHESTPLATE:
-			case LEATHER_CHESTPLATE:
-				return CHESTPLATE;
-			case DIAMOND_LEGGINGS:
-			case GOLD_LEGGINGS:
-			case IRON_LEGGINGS:
-			case CHAINMAIL_LEGGINGS:
-			case LEATHER_LEGGINGS:
-				return LEGGINGS;
-			case DIAMOND_BOOTS:
-			case GOLD_BOOTS:
-			case IRON_BOOTS:
-			case CHAINMAIL_BOOTS:
-			case LEATHER_BOOTS:
-				return BOOTS;
-			default:
-				return null;
-		}
+		String type = itemStack.getType().name();
+		if(type.endsWith("_HELMET") || type.endsWith("_SKULL")) return HELMET;
+		else if(type.endsWith("_CHESTPLATE")) return CHESTPLATE;
+		else if(type.endsWith("_LEGGINGS")) return LEGGINGS;
+		else if(type.endsWith("_BOOTS")) return BOOTS;
+		else return null;
 	}
 
 	public int getSlot(){
