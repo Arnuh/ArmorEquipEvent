@@ -161,27 +161,6 @@ public class ArmorListener implements Listener{
 		System.out.println("Type: " + event.getType().name());*/
 	}
 
-	/*@EventHandler
-	public void dispenserFireEvent(BlockDispenseEvent e){
-		ArmorType type = ArmorType.matchType(e.getItem());
-		if(type != null){
-			org.bukkit.block.Dispenser dispenser = (org.bukkit.block.Dispenser) e.getBlock().getState();
-			org.bukkit.material.Dispenser dispenserData = (org.bukkit.material.Dispenser) dispenser.getData();
-			Location loc = shift(e.getBlock().getLocation(), dispenserData.getFacing(), 1);
-			List<EntityLiving> list = ((CraftWorld) loc.getWorld()).getHandle().a(EntityLiving.class, new AxisAlignedBB(new BlockPosition(loc.getX(), loc.getY(), loc.getZ())), Predicates.and(IEntitySelector.e, new IEntitySelector.EntitySelectorEquipable(CraftItemStack.asNMSCopy(e.getItem()))));
-			if(list.isEmpty()) return;
-			EntityLiving ent = list.get(0);
-			if(ent instanceof EntityPlayer){
-				Player p = (Player) ent.getBukkitEntity();
-				ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(p, EquipMethod.DISPENSER, type, null, e.getItem());
-				Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
-				if(armorEquipEvent.isCancelled()){
-					e.setCancelled(true);
-				}
-			}
-		}
-	}*/
-
 	@EventHandler
 	public void itemBreakEvent(PlayerItemBreakEvent e){
 		ArmorType type = ArmorType.matchType(e.getBrokenItem());

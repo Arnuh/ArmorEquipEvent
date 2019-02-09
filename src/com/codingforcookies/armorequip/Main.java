@@ -18,7 +18,12 @@ public class Main extends JavaPlugin implements Listener{
 	public void onEnable(){
 		saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(new ArmorListener(getConfig().getStringList("blocked")), this);
-		// example();
+		try{
+			//Better way to check for this? Only in 1.13.1+?
+			Class.forName("org.bukkit.event.block.BlockDispenseArmorEvent");
+			getServer().getPluginManager().registerEvents(new DispenserArmorListener(), this);
+		}catch(Exception ignored){}
+		//example();
 	}
 
 	/**

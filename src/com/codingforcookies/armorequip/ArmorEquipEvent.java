@@ -129,7 +129,8 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		 */
 		HOTBAR_SWAP,
 		/**
-		 * When in range of a dispenser that shoots an armor piece to equip.
+		 * When in range of a dispenser that shoots an armor piece to equip.<br>
+		 * Requires the spigot version to have {@link org.bukkit.event.block.BlockDispenseArmorEvent} implemented.
 		 */
 		DISPENSER,
 		/**
