@@ -8,9 +8,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * @Author Borlea
- * @Github https://github.com/borlea/
- * @Website http://codingforcookies.com/
+ * @author Arnah
  * @since Jul 30, 2015
  */
 public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{

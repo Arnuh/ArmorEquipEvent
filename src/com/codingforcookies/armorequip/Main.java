@@ -7,9 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * @Author Borlea
- * @Github https://github.com/borlea/
- * @Website http://codingforcookies.com/
+ * @author Arnah
  * @since Jul 30, 2015
  */
 public class Main extends JavaPlugin implements Listener{

@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseArmorEvent;
 
 /**
- * @author Borlea
+ * @author Arnah
  * @since Feb 08, 2019
  */
 public class DispenserArmorListener implements Listener{

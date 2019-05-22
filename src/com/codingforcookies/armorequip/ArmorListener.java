@@ -3,9 +3,7 @@ package com.codingforcookies.armorequip;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -21,10 +19,8 @@ import org.bukkit.inventory.ItemStack;
 import com.codingforcookies.armorequip.ArmorEquipEvent.EquipMethod;
 
 /**
- * @Author Borlea
- * @Github https://github.com/borlea/
- * @Website http://codingforcookies.com/
- * @since Jul 30, 2015 6:43:34 PM
+ * @author Arnah
+ * @since Jul 30, 2015
  */
 public class ArmorListener implements Listener{
 
@@ -35,7 +31,7 @@ public class ArmorListener implements Listener{
 	}
 
 	@EventHandler
-	public final void onInventoryClick(final InventoryClickEvent e){
+	public final void inventoryClick(final InventoryClickEvent e){
 		boolean shift = false, numberkey = false;
 		if(e.isCancelled()) return;
 		if(e.getAction() == InventoryAction.NOTHING) return;// Why does this get called if nothing happens??
@@ -194,11 +190,6 @@ public class ArmorListener implements Listener{
 				// No way to cancel a death event.
 			}
 		}
-	}
-
-	private Location shift(Location start, BlockFace direction, int multiplier){
-		if(multiplier == 0) return start;
-		return new Location(start.getWorld(), start.getX() + direction.getModX() * multiplier, start.getY() + direction.getModY() * multiplier, start.getZ() + direction.getModZ() * multiplier);
 	}
 
 	/**

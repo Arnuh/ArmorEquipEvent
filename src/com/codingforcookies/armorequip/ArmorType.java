@@ -4,10 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * @Author Borlea
- * @Github https://github.com/borlea/
- * @Website http://codingforcookies.com/
- * @Since Jul 30, 2015 6:46:16 PM
+ * @author Arnah
+ * @since Jul 30, 2015
  */
 public enum ArmorType{
 	HELMET(5), CHESTPLATE(6), LEGGINGS(7), BOOTS(8);
