@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -29,8 +30,9 @@ public class ArmorListener implements Listener{
 	public ArmorListener(List<String> blockedMaterials){
 		this.blockedMaterials = blockedMaterials;
 	}
+	//Event Priority is highest because other plugins might cancel the events before we check.
 
-	@EventHandler
+	@EventHandler(priority =  EventPriority.HIGHEST, ignoreCancelled = true)
 	public final void inventoryClick(final InventoryClickEvent e){
 		boolean shift = false, numberkey = false;
 		if(e.isCancelled()) return;
@@ -102,8 +104,8 @@ public class ArmorListener implements Listener{
 			}
 		}
 	}
-
-	@EventHandler
+	
+	@EventHandler(priority =  EventPriority.HIGHEST, ignoreCancelled = true)
 	public void playerInteractEvent(PlayerInteractEvent e){
 		if(e.getAction() == Action.PHYSICAL) return;
 		if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK){
@@ -128,8 +130,8 @@ public class ArmorListener implements Listener{
 			}
 		}
 	}
-
-	@EventHandler
+	
+	@EventHandler(priority =  EventPriority.HIGHEST, ignoreCancelled = true)
 	public void inventoryDrag(InventoryDragEvent event){
 		// getType() seems to always be even.
 		// Old Cursor gives the item you are equipping
