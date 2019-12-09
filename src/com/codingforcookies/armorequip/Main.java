@@ -47,6 +47,7 @@ public class Main extends JavaPlugin implements Listener{
 			if(event.getNewArmorPiece() != null && event.getNewArmorPiece().getType().equals(Material.DIAMOND_HELMET)){
 				event.getPlayer().setGameMode(event.getPlayer().getGameMode().equals(GameMode.ADVENTURE) ? GameMode.SURVIVAL : GameMode.ADVENTURE);
 			}
+			System.out.println("New Gamemode: " + event.getPlayer().getGameMode());
 		}
 	}
 }

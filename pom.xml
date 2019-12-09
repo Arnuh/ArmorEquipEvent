@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.codingforcookies</groupId>
   <artifactId>ArmorEquipEvent</artifactId>
-  <version>1.7.2</version>
-  
+  <version>1.7.3</version>
+
   <dependencies>
     <dependency>
         <groupId>org.spigotmc</groupId>
@@ -12,14 +12,14 @@
         <type>jar</type>
     </dependency>
   </dependencies>
-  
+
   <repositories>
     <repository>
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
   </repositories>
-  
+
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
