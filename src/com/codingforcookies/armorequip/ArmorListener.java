@@ -105,7 +105,7 @@ public class ArmorListener implements Listener{
 	}
 
     @EventHandler(
-            priority = EventPriority.MONITOR,
+            priority = EventPriority.HIGHEST,
             ignoreCancelled = true
     )
 	public void playerInteractEvent(PlayerInteractEvent e){
