@@ -1,72 +1,31 @@
-# Build #
-#########
-MANIFEST.MF
-dependency-reduced-pom.xml
-
-# Compiled #
-############
-bin
-build
-dist
-lib
-out
-run
-target
-*.com
+# Compiled class file
 *.class
-*.dll
-*.exe
-*.o
-*.so
 
-# Databases #
-#############
-*.db
-*.sqlite
-
-# Packages #
-############
-*.7z
-*.dmg
-*.gz
-*.iso
-*.rar
-*.tar
-*.zip
-
-# Repository #
-##############
-.git
-
-# Logging #
-###########
-/logs
+# Log file
 *.log
 
-# Misc #
-########
-*.bak
+# BlueJ files
+*.ctxt
 
-# System #
-##########
-.DS_Store
-ehthumbs.db
-Thumbs.db
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
 
-# Project #
-###########
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Custom #
 .classpath
-.externalToolBuilders
-.idea
-.project
 .settings
-.checkstyle
-run
-eclipse
-nbproject
-atlassian-ide-plugin.xml
-build.xml
-nb-configuration.xml
-*.iml
-*.ipr
-*.iws
+.project
+bin
+
+# spigot 1.14.4
+lib/spigot-1.14.4.jar
