@@ -1,0 +1,6 @@
+name: ArmorEquipEvent
+main: com.codingforcookies.armorequip.Main
+version: @version@
+authors:
+  - CodingForCookies
+  - dalbodeule

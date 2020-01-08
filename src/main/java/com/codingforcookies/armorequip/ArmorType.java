@@ -26,7 +26,7 @@ public enum ArmorType{
 		if(itemStack == null || itemStack.getType().equals(Material.AIR)) return null;
 		String type = itemStack.getType().name();
 		if(type.endsWith("_HELMET") || type.endsWith("_SKULL")) return HELMET;
-		else if(type.endsWith("_CHESTPLATE")) return CHESTPLATE;
+		else if(type.endsWith("_CHESTPLATE") || type.endsWith("ELYTRA")) return CHESTPLATE;
 		else if(type.endsWith("_LEGGINGS")) return LEGGINGS;
 		else if(type.endsWith("_BOOTS")) return BOOTS;
 		else return null;
