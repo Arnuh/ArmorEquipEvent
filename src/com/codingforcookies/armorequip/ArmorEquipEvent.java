@@ -20,8 +20,6 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 	private ItemStack oldArmorPiece, newArmorPiece;
 
 	/**
-	 * Constructor for the ArmorEquipEvent.
-	 *
 	 * @param player The player who put on / removed the armor.
 	 * @param type The ArmorType of the armor added
 	 * @param oldArmorPiece The ItemStack of the armor removed.
@@ -34,16 +32,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		this.oldArmorPiece = oldArmorPiece;
 		this.newArmorPiece = newArmorPiece;
 	}
-
-	/**
-	 * Gets a list of handlers handling this event.
-	 *
-	 * @return A list of handlers handling this event.
-	 */
-	public final static HandlerList getHandlerList(){
-		return handlers;
-	}
-
+	
 	/**
 	 * Gets a list of handlers handling this event.
 	 *
@@ -77,7 +66,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 	}
 
 	/**
-	 * Returns the last equipped armor piece, could be a piece of armor, {@link Material#Air}, or null.
+	 * Returns the last equipped armor piece, could be a piece of armor, or null
 	 */
 	public final ItemStack getOldArmorPiece(){
 		return oldArmorPiece;
@@ -88,7 +77,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 	}
 
 	/**
-	 * Returns the newly equipped armor, could be a piece of armor, {@link Material#Air}, or null.
+	 * Returns the newly equipped armor, could be a piece of armor, or null
 	 */
 	public final ItemStack getNewArmorPiece(){
 		return newArmorPiece;

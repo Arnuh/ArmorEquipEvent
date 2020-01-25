@@ -201,7 +201,7 @@ public class ArmorListener implements Listener{
 	/**
 	 * A utility method to support versions that use null or air ItemStacks.
 	 */
-	private boolean isAirOrNull(ItemStack item){
+	public static boolean isAirOrNull(ItemStack item){
 		return item == null || item.getType().equals(Material.AIR);
 	}
 }

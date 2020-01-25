@@ -23,7 +23,7 @@ public enum ArmorType{
 	 * @return The parsed ArmorType, or null if not found.
 	 */
 	public static ArmorType matchType(final ItemStack itemStack){
-		if(itemStack == null || itemStack.getType().equals(Material.AIR)) return null;
+		if(ArmorListener.isAirOrNull(itemStack)) return null;
 		String type = itemStack.getType().name();
 		if(type.endsWith("_HELMET") || type.endsWith("_SKULL")) return HELMET;
 		else if(type.endsWith("_CHESTPLATE") || type.endsWith("ELYTRA")) return CHESTPLATE;
