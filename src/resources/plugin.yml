@@ -1,4 +1,5 @@
 name: ArmorEquipEvent
 main: com.codingforcookies.armorequip.Main
-version: 1.7.4
+version: 1.7.5
 author: CodingForCookies
+api-version: "1.14"
