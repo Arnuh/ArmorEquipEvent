@@ -143,7 +143,6 @@ public class ArmorListener implements Listener {
                             || Tag.WALL_SIGNS.isTagged(mat)
                             || Tag.TRAPDOORS.isTagged(mat)
                             || Tag.DOORS.isTagged(mat)
-                            || Tag.WALL_SIGNS.isTagged(mat)
                             || Tag.BUTTONS.isTagged(mat)
                             || Tag.FENCE_GATES.isTagged(mat)
                             || Tag.BEDS.isTagged(mat)
